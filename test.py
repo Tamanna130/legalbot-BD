@@ -17,7 +17,7 @@ import time
 load_dotenv()
 groq_api_key = os.getenv('GROQ_API_KEY')
 cohere_api_key = os.getenv("COHERE_API_KEY")
-os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
+google_api_key = os.getenv("GOOGLE_API_KEY")
 
 # Initialize LLM and Cohere
 llm = ChatGroq(groq_api_key=groq_api_key, model_name="Llama3-8b-8192")
@@ -95,7 +95,7 @@ prompt_template = PromptTemplate(input_variables=["context", "question"], templa
 # =============================
 def vector_embedding():
     if "vectors" not in st.session_state:
-        st.session_state.embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+        st.session_state.embeddings = GoogleGenerativeAIEmbeddings(google_api_key = google_api_key, model="models/embedding-001")
         scraped_docs = scrape_bdlaws_page("http://bdlaws.minlaw.gov.bd/act-138/part-details-152.html")
         st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
         st.session_state.final_documents = st.session_state.text_splitter.split_documents(scraped_docs)
